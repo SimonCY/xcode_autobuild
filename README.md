@@ -11,8 +11,9 @@
 我在脚本中只做了两件事情：
 * cd到工程根目录。
 * 执行自动打包脚本。
-       Applescript是通过do shell script "$(shell string)"来执行shell命令行的。 每个do shell script 语句相当于开启一个新的终端线程。需要执行多条命令行时写在同一个do shell 语句中，中间用“;”进行间隔。
+       Applescript是通过do shell script "$(shell string)"来执行shell命令行的。 每个do shell script 语句相当于开启一个新的终端线程。需要执行多条命令行时写在同一个do shell 语句中，中间用“;”进行间隔。do shell script语句的参数实际上是string，所以可以直接由Applescript变量进行拼接。
 
+```
 set HOME_PATH to "/Users/Projects/"
 set PROJECT_PATH to HOME_PATH & "paipai360/app/ios_1211/paipai360_v2.0/paipai360-2"
 
@@ -24,6 +25,9 @@ set SHELL_BUILD_WITH_PYTHON to "./autobuild.py -p paipai360-2.xcodeproj -t paipa
 log SHELL_BUILD_WITH_PYTHON
 
 do shell script SHELL_LOCATION & "; " & SHELL_BUILD_WITH_PYTHON
-        
+```
+        
 ### 使用方法			
-        使用时将autobuild.py中的参数按照要求修改完后，									
+* 将autobuild.py中的参数按照要求修改完后，将其放置到项目根目录下。
+* 将xcode_autobuild.scpt脚本放置到邮箱可执行脚本目录下，在邮箱的高级设置中添加规则为 收到指定邮件执行对应的Applescript脚本。具体的规则根据自己的实际需要进行制定，例如：可以设置收到制定账户的邮件后执行脚本、收到邮件包含制定内容后执行脚本等。
+* 发送符合规则的邮件，  Applescript脚本被执行 -> shell中制定的Python脚本被执行 ->xcode开始自动编译、打包 -> 自动上传至蒲公英应用分发平台 ->收到短信通知上传成功。
